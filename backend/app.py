@@ -12,11 +12,12 @@ load_dotenv()
 username = os.getenv('username')
 pwd = os.getenv('password')
 news_api_key = os.getenv('news_api_key')
+render_db_url = os.getenv('DATABASE_URL')
 print(f"Username: {username}, Password: {pwd}")
 
 #connecting to postgresql
 def get_db_connection():
-    conn = psy.connect(dbname='TaxTrack', user = 'postgres', password = pwd, host = 'localhost')
+    conn = psy.connect(render_db_url)
     
     return conn
 
