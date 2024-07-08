@@ -1,10 +1,12 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import os
 import psycopg2 as psy
 from dotenv import load_dotenv
 from newsapi import NewsApiClient
 
 app = Flask(__name__)
+CORS(app)
 #finally lets goooooo
 load_dotenv()
 
