@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from newsapi import NewsApiClient
 
 app = Flask(__name__)
-
+#finally lets goooooo
 load_dotenv()
 
 #getting username and password from .env file
