@@ -15,7 +15,7 @@ const AppBar = () => {
     return (
         
     <nav>
-        <div className="bg-slate-800 p-6 border-b border-white" >
+        <div className="bg-slate-800 p-6" >
             <Link to="/home" className="text-3xl py-4 pr-4 font-bold text-blue-700 align-middle"><span className='text-blue-600'>Tax</span>Track</Link>
             <Link to="/home" className="text-white p-4 align-middle">Home</Link>
             <Link to="/history" className="text-white p-4 align-middle">History</Link>
