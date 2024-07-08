@@ -154,4 +154,4 @@ def get_news():
     return jsonify({'news': news}), 200
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
