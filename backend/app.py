@@ -3,8 +3,10 @@ import os
 import psycopg2 as psy
 from dotenv import load_dotenv
 from newsapi import NewsApiClient
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 #finally lets goooooo
 load_dotenv()
 
