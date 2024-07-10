@@ -50,7 +50,7 @@ def get_users():
     cur.execute('SELECT * FROM user_details')
     rows = cur.fetchall()
     user_records = []
-    columns = ['name', 'age', 'email']
+    columns = ['name', 'age', 'email_id', 'id']
     for row in rows:
             record_dict = {}
             for i, value in enumerate(row):
