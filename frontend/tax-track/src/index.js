@@ -9,6 +9,7 @@ import HomePage from './pages/HomePage';
 import HistoryPage from './pages/HistoryPage'
 import FaqPage from './pages/FaqPage'
 import NewsPage from './pages/NewsPage'
+import { UserProvider } from './pages/auth/UserContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -37,13 +38,15 @@ const router = createBrowserRouter([{
   element: <FaqPage/>,
 },
 {
-  path: '/history',
+  path: '/history/:email',
   element: <HistoryPage/>,
 },
 ])
 
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router}/>
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </React.StrictMode>
 );

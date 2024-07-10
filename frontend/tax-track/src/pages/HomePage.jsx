@@ -1,6 +1,6 @@
 import React from 'react'
 import AppBar from '../components/AppBar'
-import "../styles/Calculator.css"
+import "../styles/Home.css"
 
 const HomePage = () => {
     
@@ -63,7 +63,7 @@ const HomePage = () => {
         <tr>
             <th></th>
             <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Post-Budget(Old Regime)<br>FY(2024-2025)</th>
-            <th>&nbsp;&nbsp;&nbsp;Post-Budget;(New Regime)<br>FY(2024-2025)</th>
+            <th>&nbsp;&nbsp;&nbsp;Post-Budget(New Regime)<br>FY(2024-2025)</th>
         </tr>
         <tr>
             <td>Total Income</td>
@@ -97,8 +97,9 @@ const HomePage = () => {
         <>
             <AppBar/>
             <div class="main-container">
+
             <div class="heading">
-                <h2>Income Tax Calculator - FY 2024-2025</h2>
+                <h2 className=''>Income Tax Calculator - FY 2024-2025</h2>
             </div>
             
             <div class="radio-inputs">

@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
 import { auth } from '../../config/firebase';
+import { useUser } from './UserContext.jsx';
 
 const LoginPage = () => {
 
+  const { setUser } = useUser()
   const navigate = useNavigate()
   const [email, getEmail] = useState("");
   const [password, getPassword] = useState("");
@@ -18,6 +20,7 @@ const LoginPage = () => {
       try{      
         await signInWithEmailAndPassword(auth, email, password).then((userCredential) => {
           const user = userCredential.user
+          setUser(user)
           console.log(user)
           navigate("/home")
         })
@@ -26,6 +29,8 @@ const LoginPage = () => {
         console.log("sign in error", error)
       }        
   }
+
+  
 
   return (
     <>

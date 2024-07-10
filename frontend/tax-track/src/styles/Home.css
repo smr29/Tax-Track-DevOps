@@ -1,24 +1,29 @@
 .main-container {
-    font-family:"Roboto" sans-serif;
+    font-family: "Roboto" ,sans-serif;
     background-image: url('../assets/calculatorbg.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
-    width: auto;
-    height: auto;
-    margin: 0;    
+    background-attachment: fixed;  
+    position: relative;
+    width: 100%;  
+    min-height: 100vh; 
+    margin: 0;
     padding: 0;
     padding-bottom: 30px;
 }
 
 .heading {
-    margin-left: 500px;
+    
+    margin-left: 400px;  
     align-items: center;
     justify-content: center;
+    font-weight: bolder;
+    font-size: 30px;
 }
 
 .radio-inputs {
     margin-top: 40px;
-    margin-left: 100px;
+    margin-left: 65px;
     position: relative;
     display: flex;
     border-radius: 0.5rem;
@@ -88,14 +93,24 @@
 
 .content {
     margin-top: 20px;
-    margin-left: 100px;
     padding: 20px;
     border-radius: 15px;
-    width: 700px;
+    width: 70%; 
+    max-width: 660px; 
+    box-sizing: border-box; 
+    margin-left: 50px;
+    height:auto; 
+    box-sizing: border-box;
+    background-image: url('../assets/background.jpeg');
+    background-size: 5000px;
+    background-repeat: no-repeat;
+    background-attachment: fixed;  
+    position: relative; 
 }
 
-.content > h2{
-    margin-top: 20px;
+
+.content > h2 {
+    margin-top: 2px;
 }
 
 .radio-container {
@@ -164,7 +179,7 @@
     display: flex;
     flex-direction: column;
     max-width: 240px;
-    background-color: #d8e5f3;
+    background-color: #90adcd;
 }
 
 .coolinput label.text {
@@ -173,7 +188,7 @@
     font-weight:bold;
     padding: 5px; 
     width: fit-content;
-    background-color: #d8e5f3;
+    background-color: #90adcd;
 }
 
 .coolinput input[type=text].input {
@@ -181,7 +196,7 @@
     font-size: 0.75rem;
     border: 2px #010517 solid;
     border-radius: 5px;
-    background: #e8e8e8;
+    background: #d8e5f3;
 }
 
 .coolinput input[type=text].input:focus {
@@ -214,6 +229,7 @@
 }
 
 .arrow path {
+    size: 0vmax;
     fill: rgb(255, 251, 251);
 }
 
@@ -221,39 +237,14 @@
     transform: scale(0.97);
 }
 
-.summary-table {
-    width: 50%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    height: 5%;
-}
-
-.summary-table th,
-.summary-table td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-    height: 20px;
-}
-
-.summary-table th {
-    background-color: #f2f2f2;
-}
-
-.summary-table td:first-child {
-    font-weight: bold;
-}
-
-.summary-suggestion {
-    margin-top: 20px;
-}
 
 
-@media (max-width: 768px) {
+
+/* @media (max-width: 768px) {
     .coolinput-container {
         grid-template-columns: 1fr;
     }
-}
+} */
 
 .summary-suggestion{
     margin-top: 60px;
