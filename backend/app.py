@@ -49,10 +49,17 @@ def get_users():
     cur = conn.cursor()
     cur.execute('SELECT * FROM user_details')
     rows = cur.fetchall()
+    user_records = []
+    columns = ['name', 'age', 'email']
+    for row in rows:
+            record_dict = {}
+            for i, value in enumerate(row):
+                record_dict[columns[i]] = value
+            user_records.append(record_dict)
     cur.close()
     conn.close()
     
-    return jsonify(rows)
+    return jsonify({'user_details': user_records}), 201
 
 #api to add a tax record
 @app.route('/add_tax_record', methods=['POST'])
