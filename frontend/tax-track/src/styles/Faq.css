@@ -7,10 +7,17 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.main-container-faq{
+  background-image: url('../assets/background.jpeg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;  
+  padding-bottom: 10px;
+}
+
 .wrapper {
   max-width: 75%;
   margin: auto;
-  
 }
 
 .wrapper > p,
@@ -20,12 +27,11 @@
 }
 
 .wrapper > h1 {
-  letter-spacing: 3px;
   color: #112A46;
 }
 
 .question {
-  background-color: d8e5f3;
+  background-color: #d8e5f3;
   color: #112A46;
   cursor: pointer;
   font-size: 1.2rem;
@@ -52,7 +58,7 @@
 .panel {
     overflow: hidden;  
     display: none;
-    background-color: d8e5f3;
+    background-color: #d8e5f3;
     color: #112A46;
     cursor: pointer;
     font-size: 1.2rem;
@@ -78,7 +84,7 @@
 }
 
 .faq.active {
-    background-color: d8e5f3;
+    background-color: #d8e5f3;
     color: #112A46;
     cursor: pointer;
     font-size: 1.2rem;

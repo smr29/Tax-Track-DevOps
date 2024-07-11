@@ -95,11 +95,11 @@ const HomePage = () => {
 
     return (
         <>
-            <AppBar/>
+            
             <div class="main-container">
-
+            <AppBar/>
             <div class="heading">
-                <h2 className=''>Income Tax Calculator - FY 2024-2025</h2>
+                <h2 className='font-bold text-3xl'>Income Tax Calculator - FY 2024-2025</h2>
             </div>
             
             <div class="radio-inputs">

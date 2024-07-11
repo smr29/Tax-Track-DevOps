@@ -12,10 +12,10 @@ const FaqPage = () => {
   };
 
   return (
-    <div className='pb-10'>
+    <div className="main-container-faq">
       <AppBar/>
       <div className="wrapper">
-        <h1>Frequently Asked Questions</h1>
+        <h1 className='font-bold text-3xl'>Frequently Asked Questions</h1>
 
         <div className={`faq ${activeIndex === 0 ? 'active' : ''}`}>
           <button className="question" onClick={() => togglePanel(0)}>

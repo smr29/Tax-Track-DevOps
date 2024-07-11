@@ -12,17 +12,14 @@
     padding-bottom: 30px;
 }
 
-.heading {
-    
+.heading {    
     margin-left: 400px;  
     align-items: center;
     justify-content: center;
-    font-weight: bolder;
-    font-size: 30px;
 }
 
 .radio-inputs {
-    margin-top: 40px;
+    margin-top: 20px;
     margin-left: 65px;
     position: relative;
     display: flex;
