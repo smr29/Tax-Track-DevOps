@@ -64,7 +64,7 @@ def get_users():
 #api to add a tax record
 @app.route('/add_tax_record', methods=['POST'])
 def add_tax_record():
-    # try:
+    try:
         data = request.get_json()
         #income details
         email_id = data['email_id']
@@ -107,8 +107,8 @@ def add_tax_record():
         conn.close()
         
         return jsonify({'status': 'record added succesfully'}), 201
-    # except Exception as e :
-    #     return jsonify({'error': str(e)}), 400
+    except Exception as e :
+        return jsonify({'error': str(e)}), 400
 
 
 #api to get list of all past tax records
