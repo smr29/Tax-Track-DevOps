@@ -10,7 +10,7 @@ from datetime import datetime
 
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = os.environ['MONGO_URI']
+app.config["MONGO_URI"] = os.getenv('MONGO_URI')
 print(os.environ['MONGO_URI'])
 db = PyMongo(app).db
 
