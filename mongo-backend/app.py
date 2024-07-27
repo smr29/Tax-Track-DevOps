@@ -5,9 +5,13 @@ from dotenv import load_dotenv
 from newsapi import NewsApiClient
 from flask_cors import CORS
 from flask_pymongo import PyMongo
+import random
+from datetime import datetime
+
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = os.getenv("MONGO_URI")
+app.config["MONGO_URI"] = os.environ['MONGO_URI']
+print(os.environ['MONGO_URI'])
 db = PyMongo(app).db
 
 app = Flask(__name__)
@@ -15,18 +19,8 @@ CORS(app)
 #finally lets goooooo
 load_dotenv()
 
-#getting username and password from .env file
-username = os.getenv('username')
-pwd = os.getenv('password')
 news_api_key = os.getenv('news_api_key')
-render_db_url = os.getenv('DATABASE_URL')
-print(f"Username: {username}, Password: {pwd}")
 
-#connecting to postgresql
-def get_db_connection():
-    conn = psy.connect(render_db_url)
-    
-    return conn
 
 #api to add users
 @app.route('/add_user', methods = ['POST'])
@@ -36,9 +30,14 @@ def add_user():
         name = data['name']
         email = data['email']
         
+        ssn = random.random()%100
+        
         user = {
             'name': name,
-            'email': email
+            'email': email,
+            'phone_no': '+91123456789',
+            'address': 'ABC, XYZ - 560062',
+            'ssn':str(ssn)
         }
         
         db.user_details.insert_one(user)
@@ -57,7 +56,10 @@ def get_users():
         users_list = [
             {
                 'name': user['name'],
-                'email': user['email']
+                'email': user['email'],
+                'phone_no': user['phone_no'],
+                'address': user['address'],
+                'ssn':user['ssn']
             }
             for user in users_list_object
         ] 
@@ -70,8 +72,10 @@ def get_users():
 #api to add a tax record
 @app.route('/add_tax_record', methods=['POST'])
 def add_tax_record():
-    # try:
+    try:
         data = request.get_json()
+        
+        formatted_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         #income details
         data_map = {
             "email_id": data['email'],
@@ -102,61 +106,133 @@ def add_tax_record():
             "total_income_new": data['total_income_new'],
             "deductions_new": data['deductions_new'],
             "taxable_income_new": data['taxable_income_new'],
-            "total_tax_new": data['total_tax_new']
+            "total_tax_new": data['total_tax_new'],
+            
+            # extra parameters
+            'type': 'savings',
+            'date': formatted_time,
+            'deductions_description': 'Capital loss',
+            'income_bracket': data['income_from_salary']
+           
         }
-
         
-        cursor.execute('INSERT INTO tax_details(email_id, income_from_salary, exempt_allowances, income_from_interest, interest_on_home_loan_self, rental_income_recieved, interest_on_home_loan, income_from_digital_assets, other_income, basic_deductions, interest_from_deposits, medical_insurance, donation_to_charity, interest_on_education_loan, contribution_to_nps, total_income_old,  deductions_old, taxable_income_old, total_tax_old, total_income_new, deductions_new, taxable_income_new, total_tax_new) VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)', (email_id, income_from_salary, exempt_allowances, income_from_interest, interest_on_home_loan_self, rental_income_recieved, interest_on_home_loan, income_from_digital_assets, other_income, basic_deductions, interest_from_deposits, medical_insurance, donation_to_charity, interest_on_education_loan, contribution_to_nps, total_income_old,  deductions_old, taxable_income_old, total_tax_old, total_income_new, deductions_new, taxable_income_new, total_tax_new))
-        
-        conn.commit()
-        cursor.close()
-        conn.close()
+        db.tax_details.insert_one(data_map)
         
         return jsonify({'status': 'record added succesfully'}), 201
-    # except Exception as e :
-    #     return jsonify({'error': str(e)}), 400
+    except Exception as e :
+        return jsonify({'error': str(e)}), 400
 
 
 #api to get list of all past tax records
 @app.route('/get_tax_records/', methods=['GET'])
 def get_tax_records():
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM tax_details')
-    columns = ['email_id', 'income_from_salary', 'exempt_allowances', 'income_from_interest', 'interest_on_home_loan_self', 'rental_income_recieved', 'interest_on_home_loan', 'income_from_digital_assets', 'other_income', 'basic_deductions', 'interest_from_deposits', 'medical_insurance', 'donations_to_charity', 'interest_on_educational_loan', 'contribution_to_nps', 'total_income_old',  'deductions_old', 'taxable_income_old', 'total_tax_old', 'total_income_new', 'deductions_new', 'taxable_income_new', 'total_tax_new']
-    tax_records = []
-    # cur.execute('SELECT email_id, income_from_salary, exempt_allowances, income_from_interest, interest_on_home_loan_self, rental_income_recieved, interest_on_home_loan, income_from_digital_assets, other_income, basic_deductions, interest_from_deposits, medical_insurance, donation_to_charity, interest_on_education_loan, contribution_to_nps, total_income_old,  deductions_old, taxable_income_old, total_tax_old, total_income_new, deductions_new, taxable_income_new, total_tax_new FROM tax_details')
-    rows = cur.fetchall()
-    for row in rows:
-            record_dict = {}
-            for i, value in enumerate(row):
-                record_dict[columns[i]] = value
-            tax_records.append(record_dict)
-            
-    cur.close()
-    conn.close()
+    try:
+        data_object = db.tax_details.find()
     
-    return jsonify({'tax-records': tax_records}), 200
-
+        data_list = [
+            {
+                "email_id": data['email_id'],
+                "income_from_salary": data['income_from_salary'],
+                "exempt_allowances": data['exempt_allowances'],
+                "income_from_interest": data['income_from_interest'],
+                "interest_on_home_loan_self": data['interest_on_home_loan_self'],
+                "rental_income_received": data['rental_income_received'],
+                "interest_on_home_loan": data['interest_on_home_loan'],
+                "income_from_digital_assets": data['income_from_digital_assets'],
+                "other_income": data['other_income'],
+                
+                # deductions
+                "basic_deductions": data['basic_deductions'],
+                "interest_from_deposits": data['interest_from_deposits'],
+                "medical_insurance": data['medical_insurance'],
+                "donation_to_charity": data['donation_to_charity'],
+                "interest_on_education_loan": data['interest_on_education_loan'],
+                "contribution_to_nps": data['contribution_to_nps'],
+                
+                # old regime
+                "total_income_old": data['total_income_old'],
+                "deductions_old": data['deductions_old'],
+                "taxable_income_old": data['taxable_income_old'],
+                "total_tax_old": data['total_tax_old'],
+                
+                # new regime
+                "total_income_new": data['total_income_new'],
+                "deductions_new": data['deductions_new'],
+                "taxable_income_new": data['taxable_income_new'],
+                "total_tax_new": data['total_tax_new'],
+                
+                # extra parameters
+                'type': data['type'],
+                'date': data['date'],
+                'deductions_description': data['deductions_description'],
+                'income_bracket': data['income_from_salary']
+                
+                
+            }
+            for data in data_object
+        ] 
+        
+        return jsonify({'tax-records': data_list}), 201
+    
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+        
 #api to get specific records based on email
 @app.route('/get_tax_records/<email_id>', methods=['GET'])
 def get_tax_record(email_id):
-    conn = get_db_connection()
-    cur = conn.cursor()
-    cur.execute('SELECT * FROM tax_details WHERE email_id = %s', (email_id,))
-    columns = ['email_id', 'income_from_salary', 'exempt_allowances', 'income_from_interest', 'interest_on_home_loan_self', 'rental_income_recieved', 'interest_on_home_loan', 'income_from_digital_assets', 'other_income', 'basic_deductions', 'interest_from_deposits', 'medical_insurance', 'donations_to_charity', 'interest_on_educational_loan', 'contribution_to_nps', 'total_income_old',  'deductions_old', 'taxable_income_old', 'total_tax_old', 'total_income_new', 'deductions_new', 'taxable_income_new', 'total_tax_new']
-    tax_records = []
-    rows = cur.fetchall()
-    for row in rows:
-            record_dict = {}
-            for i, value in enumerate(row):
-                record_dict[columns[i]] = value
-            tax_records.append(record_dict)
-            
-    cur.close()
-    conn.close()
     
-    return jsonify({'tax-records': tax_records}), 200
+    try:
+        query= {'email_id': email_id}
+    
+        data_object = db.tax_details.find(query)
+        
+        data_list = [
+            {
+                "email_id": data['email_id'],
+                "income_from_salary": data['income_from_salary'],
+                "exempt_allowances": data['exempt_allowances'],
+                "income_from_interest": data['income_from_interest'],
+                "interest_on_home_loan_self": data['interest_on_home_loan_self'],
+                "rental_income_received": data['rental_income_received'],
+                "interest_on_home_loan": data['interest_on_home_loan'],
+                "income_from_digital_assets": data['income_from_digital_assets'],
+                "other_income": data['other_income'],
+                
+                # deductions
+                "basic_deductions": data['basic_deductions'],
+                "interest_from_deposits": data['interest_from_deposits'],
+                "medical_insurance": data['medical_insurance'],
+                "donation_to_charity": data['donation_to_charity'],
+                "interest_on_education_loan": data['interest_on_education_loan'],
+                "contribution_to_nps": data['contribution_to_nps'],
+                
+                # old regime
+                "total_income_old": data['total_income_old'],
+                "deductions_old": data['deductions_old'],
+                "taxable_income_old": data['taxable_income_old'],
+                "total_tax_old": data['total_tax_old'],
+                
+                # new regime
+                "total_income_new": data['total_income_new'],
+                "deductions_new": data['deductions_new'],
+                "taxable_income_new": data['taxable_income_new'],
+                "total_tax_new": data['total_tax_new'],
+                
+                # extra parameters
+                'type': data['type'],
+                'date': data['date'],
+                'deductions_description': data['deductions_description'],
+                'income_bracket': data['income_from_salary']
+                
+                
+            }
+            for data in data_object
+        ]
+        
+        return jsonify({'tax-records': data_list}), 201
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+    
 
 
 
