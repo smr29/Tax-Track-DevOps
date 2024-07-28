@@ -30,33 +30,33 @@ const HomePage = () => {
     }
 
     function calculateAndShowSummary() {  
-    let income = parseInt(document.querySelector('[name="input1"]').value) || 0;
-    let exemptAllowances = parseInt(document.querySelector('[name="input2"]').value) || 0;
-    let incomeInterest = parseInt(document.querySelector('[name="input3"]').value) || 0;
-    let interestHomeLoanSelf = parseInt(document.querySelector('[name="input4"]').value) || 0;
-    let rentalIncome = parseInt(document.querySelector('[name="input5"]').value) || 0;
-    let interestHomeLoanLetOut = parseInt(document.querySelector('[name="input6"]').value) || 0;
-    let incomeDigitalAssets = parseInt(document.querySelector('[name="input7"]').value) || 0;
-    let otherIncome = parseInt(document.querySelector('[name="input8"]').value) || 0;
-
-    let basicDeductions = parseInt(document.querySelector('[name="input-basic-deductions"]').value) || 0;
-    let interestDeposits = parseInt(document.querySelector('[name="input-interest-deposits"]').value) || 0;
-    let medicalInsurance = parseInt(document.querySelector('[name="input-medical-insurance"]').value) || 0;
-    let charityDonations = parseInt(document.querySelector('[name="input-charity-donations"]').value) || 0;
-    let educationalLoan = parseInt(document.querySelector('[name="input-educational-loan"]').value) || 0;
-    let housingLoan = parseInt(document.querySelector('[name="input-housing-loan"]').value) || 0;
-    let npsContribution = parseInt(document.querySelector('[name="input-nps-contribution"]').value) || 0;
-
-    let totalIncomeOldRegime = income + incomeInterest + rentalIncome + incomeDigitalAssets + otherIncome - exemptAllowances;
-    let totalDeductionsOldRegime = basicDeductions + interestDeposits + medicalInsurance + charityDonations + educationalLoan + housingLoan + npsContribution + interestHomeLoanSelf + interestHomeLoanLetOut;
-    let taxableIncomeOldRegime = totalIncomeOldRegime - totalDeductionsOldRegime;
-
-    let totalIncomeNewRegime = totalIncomeOldRegime; 
-    let totalDeductionsNewRegime = 50000;  
-    let taxableIncomeNewRegime = totalIncomeNewRegime - totalDeductionsNewRegime;  
-
-    let taxOldRegime = taxableIncomeOldRegime > 250000 ? (taxableIncomeOldRegime - 250000) * 0.05 : 0;
-    let taxNewRegime = taxableIncomeNewRegime > 250000 ? (taxableIncomeNewRegime - 250000) * 0.05 : 0;  
+        let income = parseInt(document.querySelector('[name="input1"]').value) || 0;
+        let exemptAllowances = parseInt(document.querySelector('[name="input2"]').value) || 0;
+        let incomeInterest = parseInt(document.querySelector('[name="input3"]').value) || 0;
+        let interestHomeLoanSelf = parseInt(document.querySelector('[name="input4"]').value) || 0;
+        let rentalIncome = parseInt(document.querySelector('[name="input5"]').value) || 0;
+        let interestHomeLoanLetOut = parseInt(document.querySelector('[name="input6"]').value) || 0;
+        let incomeDigitalAssets = parseInt(document.querySelector('[name="input7"]').value) || 0;
+        let otherIncome = parseInt(document.querySelector('[name="input8"]').value) || 0;
+    
+        let basicDeductions = parseInt(document.querySelector('[name="input-basic-deductions"]').value) || 0;
+        let interestDeposits = parseInt(document.querySelector('[name="input-interest-deposits"]').value) || 0;
+        let medicalInsurance = parseInt(document.querySelector('[name="input-medical-insurance"]').value) || 0;
+        let charityDonations = parseInt(document.querySelector('[name="input-charity-donations"]').value) || 0;
+        let educationalLoan = parseInt(document.querySelector('[name="input-educational-loan"]').value) || 0;
+        let housingLoan = parseInt(document.querySelector('[name="input-housing-loan"]').value) || 0;
+        let npsContribution = parseInt(document.querySelector('[name="input-nps-contribution"]').value) || 0;
+    
+        let totalIncomeOldRegime = income + incomeInterest + rentalIncome + incomeDigitalAssets + otherIncome - exemptAllowances;
+        let totalDeductionsOldRegime = basicDeductions + interestDeposits + medicalInsurance + charityDonations + educationalLoan + housingLoan + npsContribution + interestHomeLoanSelf + interestHomeLoanLetOut;
+        let taxableIncomeOldRegime = totalIncomeOldRegime - totalDeductionsOldRegime;
+    
+        let totalIncomeNewRegime = totalIncomeOldRegime; 
+        let totalDeductionsNewRegime = Math.min(50000, totalIncomeNewRegime); 
+        let taxableIncomeNewRegime = totalIncomeNewRegime - totalDeductionsNewRegime;  
+    
+        let taxOldRegime = taxableIncomeOldRegime > 250000 ? (taxableIncomeOldRegime - 250000) * 0.05 : 0;
+        let taxNewRegime = taxableIncomeNewRegime > 250000 ? (taxableIncomeNewRegime - 250000) * 0.05 : 0;
 
     let summaryText = `
         <table>

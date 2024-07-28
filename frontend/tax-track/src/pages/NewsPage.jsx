@@ -26,7 +26,11 @@ const NewsPage = () => {
   }, []);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-2xl text-gray-700">Loading...</div>
+      </div>
+    );
   }
 
   return (

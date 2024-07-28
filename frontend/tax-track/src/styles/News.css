@@ -16,8 +16,7 @@
   .news-container {
     display: flex;
     flex-wrap:wrap-reverse;
-    justify-content: center;
-    
+    justify-content: center;    
   }
   
   .news-card {

@@ -50,11 +50,6 @@
   font-size: 1.6rem;
 }
 
-.active,
-.question:hover {
-  background-color: #d8e5f3;
-}
-
 .panel {
     overflow: hidden;  
     display: none;
