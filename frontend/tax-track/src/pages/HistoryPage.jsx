@@ -15,7 +15,7 @@ const HistoryPage = () => {
     if (user) {
       console.log(user.email)
       axios.get(`https://tax-track-updated.onrender.com/get_tax_records/${user.email}`)
-        .then(response => {
+        .then(response =>   {
           console.log(response)
           setTaxRecords(response.data['tax-records']);
           setLoading(false);
@@ -37,7 +37,7 @@ const HistoryPage = () => {
     <>
     <AppBar />
     <div className='main-container-history p-5'>        
-      <h2 className="heading font-bold text-3xl text-center m-0">Previous Tax Records for {user.email}</h2><br/>
+      <h2 className="heading font-bold text-3xl text-center m-0">Previous Tax Records</h2><br/>
       <div className="container">      
         {taxRecords.map((record, index) => (
           <div className="card" key={index}>   

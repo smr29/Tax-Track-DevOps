@@ -1,8 +1,5 @@
 .main-container-news {
-    background-image: url('../assets/background.jpeg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;  
+    background-color: #91accd;  
     padding-bottom: 20px;
 }
 

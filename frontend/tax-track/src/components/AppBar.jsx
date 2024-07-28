@@ -28,6 +28,7 @@ const AppBar = () => {
               ) : (
             <Link to="/" className="text-white p-4 align-middle">History</Link>
             )}
+            
             <Link to="/news" className="text-white p-4 align-middle">News</Link>
             <Link to="/faq" className="text-white p-4 align-middle">FAQ</Link>
             <Link to="/login" className="text-white p-1 float-right align-middle" onClick={handleLogout}>Log out</Link>

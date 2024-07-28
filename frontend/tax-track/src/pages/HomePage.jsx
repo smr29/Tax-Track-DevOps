@@ -1,35 +1,14 @@
 import React from 'react'
 import AppBar from '../components/AppBar'
 import "../styles/Home.css"
+import { useUser } from './auth/UserContext'
+import axios from 'axios'
 
 const HomePage = () => {
-    
-    function showContent(contentId) {
-        const contents = document.querySelectorAll('.content');
-        contents.forEach(function(content) {
-            content.style.display = 'none';
-            content.classList.remove('active');
-        });
-        
-        const selectedContent = document.getElementById('content-' + contentId);
-        if (selectedContent) {
-            selectedContent.style.display = 'block';
-            selectedContent.classList.add('active');
-        }
-        
-        const radios = document.querySelectorAll('.radio input');
-        radios.forEach(function(radio) {
-            if (radio.nextElementSibling.textContent.replace(/\s/g, '-') === contentId) {
-                radio.checked = true;
-            }
-        });
-    }
-    
-    function nextStep(nextContentId) {
-        showContent(nextContentId);
-    }
 
-    function calculateAndShowSummary() {  
+    const {user} = useUser();
+    
+    const calculateAndShowSummary = async(e) => {  
         let income = parseInt(document.querySelector('[name="input1"]').value) || 0;
         let exemptAllowances = parseInt(document.querySelector('[name="input2"]').value) || 0;
         let incomeInterest = parseInt(document.querySelector('[name="input3"]').value) || 0;
@@ -58,39 +37,106 @@ const HomePage = () => {
         let taxOldRegime = taxableIncomeOldRegime > 250000 ? (taxableIncomeOldRegime - 250000) * 0.05 : 0;
         let taxNewRegime = taxableIncomeNewRegime > 250000 ? (taxableIncomeNewRegime - 250000) * 0.05 : 0;
 
-    let summaryText = `
-        <table>
-        <tr>
-            <th></th>
-            <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Post-Budget(Old Regime)<br>FY(2024-2025)</th>
-            <th>&nbsp;&nbsp;&nbsp;Post-Budget(New Regime)<br>FY(2024-2025)</th>
-        </tr>
-        <tr>
-            <td>Total Income</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${totalIncomeOldRegime.toLocaleString('en-IN')}</td>
-            <td>&nbsp;&nbsp;&nbsp;Rs. ${totalIncomeNewRegime.toLocaleString('en-IN')}</td>
-        </tr>
-        <tr>
-            <td>Exemptions & Deductions</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${totalDeductionsOldRegime.toLocaleString('en-IN')}</td>
-            <td>&nbsp;&nbsp;&nbsp;Rs. ${totalDeductionsNewRegime.toLocaleString('en-IN')}</td>
-        </tr>
-        <tr>
-            <td>Taxable Income</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${taxableIncomeOldRegime.toLocaleString('en-IN')}</td>
-            <td>&nbsp;&nbsp;&nbsp;Rs. ${taxableIncomeNewRegime.toLocaleString('en-IN')}</td>
-        </tr>
-        <tr>
-            <td>Tax due on above</td>
-            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${taxOldRegime.toLocaleString('en-IN')}</td>
-            <td>&nbsp;&nbsp;&nbsp;Rs. ${taxNewRegime.toLocaleString('en-IN')}</td>
-        </tr>
-        </table>
-    `;  
+        const d = new Date();
+        let localDate = d.toLocaleDateString();
+        console.log(localDate);
 
-    let summaryElement = document.getElementById('summaryOutput');
-    summaryElement.innerHTML = summaryText; 
-    showContent('Summary');
+        const taxData = {
+            email: user.email,
+            income_from_salary: income,
+            exempt_allowances: exemptAllowances,
+            income_from_interest: incomeInterest,
+            interest_on_home_loan_self: interestHomeLoanSelf,
+            rental_income_recieved: rentalIncome,
+            interest_on_home_loan: interestHomeLoanLetOut,
+            income_from_digital_assets: incomeDigitalAssets,
+            other_income: otherIncome,
+            basic_deductions: basicDeductions,
+            interest_from_deposits: interestDeposits,
+            medical_insurance: medicalInsurance,
+            donation_to_charity: charityDonations,
+            interest_on_education_loan: educationalLoan,
+            contribution_to_nps: npsContribution,
+            total_income_old: totalIncomeOldRegime,
+            deductions_old: totalDeductionsOldRegime,
+            taxable_income_old: taxableIncomeOldRegime,
+            total_tax_old: taxOldRegime,
+            total_income_new: totalIncomeNewRegime,
+            deductions_new: totalDeductionsNewRegime,
+            taxable_income_new: taxableIncomeNewRegime,
+            total_tax_new: taxNewRegime, 
+            type: "savings",
+            date: localDate,
+            deductions_description: "Capital loss",
+            income_bracket: "1"
+        };
+
+        console.log(taxData)
+
+        await axios.post("https://tax-track-updated.onrender.com/add_tax_record", taxData).then(response => {
+            console.log('Data sent to backend successfully:', response.data);
+        }).catch(error => {
+            console.error('Error sending data to backend:', error);
+        });
+
+        let summaryText = `
+            <table>
+            <tr>
+                <th></th>
+                <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Post-Budget(Old Regime)<br>FY(2024-2025)</th>
+                <th>&nbsp;&nbsp;&nbsp;Post-Budget(New Regime)<br>FY(2024-2025)</th>
+            </tr>
+            <tr>
+                <td>Total Income</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${totalIncomeOldRegime.toLocaleString('en-IN')}</td>
+                <td>&nbsp;&nbsp;&nbsp;Rs. ${totalIncomeNewRegime.toLocaleString('en-IN')}</td>
+            </tr>
+            <tr>
+                <td>Exemptions & Deductions</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${totalDeductionsOldRegime.toLocaleString('en-IN')}</td>
+                <td>&nbsp;&nbsp;&nbsp;Rs. ${totalDeductionsNewRegime.toLocaleString('en-IN')}</td>
+            </tr>
+            <tr>
+                <td>Taxable Income</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${taxableIncomeOldRegime.toLocaleString('en-IN')}</td>
+                <td>&nbsp;&nbsp;&nbsp;Rs. ${taxableIncomeNewRegime.toLocaleString('en-IN')}</td>
+            </tr>
+            <tr>
+                <td>Tax due on above</td>
+                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rs. ${taxOldRegime.toLocaleString('en-IN')}</td>
+                <td>&nbsp;&nbsp;&nbsp;Rs. ${taxNewRegime.toLocaleString('en-IN')}</td>
+            </tr>
+            </table>
+        `;  
+
+        let summaryElement = document.getElementById('summaryOutput');
+        summaryElement.innerHTML = summaryText; 
+        showContent('Summary');
+    }
+
+    function showContent(contentId) {
+        const contents = document.querySelectorAll('.content');
+        contents.forEach(function(content) {
+            content.style.display = 'none';
+            content.classList.remove('active');
+        });
+        
+        const selectedContent = document.getElementById('content-' + contentId);
+        if (selectedContent) {
+            selectedContent.style.display = 'block';
+            selectedContent.classList.add('active');
+        }
+        
+        const radios = document.querySelectorAll('.radio input');
+        radios.forEach(function(radio) {
+            if (radio.nextElementSibling.textContent.replace(/\s/g, '-') === contentId) {
+                radio.checked = true;
+            }
+        });
+    }
+    
+    function nextStep(nextContentId) {
+        showContent(nextContentId);
     }
 
     return (

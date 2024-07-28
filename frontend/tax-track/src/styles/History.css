@@ -1,11 +1,7 @@
  .main-container-history {
     margin: 0;
     padding-top: 1px; 
-    height: calc(100vh - 72px);
-    background-image: url('../assets/background.jpeg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed; 
+    background-color: #91accd; 
   }
   
   .heading {

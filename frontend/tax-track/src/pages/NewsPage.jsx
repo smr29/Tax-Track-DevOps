@@ -8,7 +8,7 @@ const NewsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    axios.get('https://tax-track.onrender.com/news')
+    axios.get('https://tax-track-updated.onrender.com/news')
       .then(response => {
         console.log(response);
         setNewsArticles(response.data.news.articles);
