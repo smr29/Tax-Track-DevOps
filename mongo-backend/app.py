@@ -55,11 +55,11 @@ def get_users():
         
         users_list = [
             {
-                'name': user['name'],
-                'email': user['email'],
-                'phone_no': user['phone_no'],
-                'address': user['address'],
-                'ssn':user['ssn']
+                    'name': user['name'],
+                    'email': user['email'],
+                    'phone_no': user['phone_no'],
+                    'address': user['address'],
+                    'ssn':user['ssn']
             }
             for user in users_list_object
         ] 
