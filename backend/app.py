@@ -4,6 +4,7 @@ import os
 import psycopg2 as psy
 from dotenv import load_dotenv
 from newsapi import NewsApiClient
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
@@ -14,11 +15,12 @@ load_dotenv()
 username = os.getenv('username')
 pwd = os.getenv('password')
 news_api_key = os.getenv('news_api_key')
+render_db_url = os.getenv('DATABASE_URL')
 print(f"Username: {username}, Password: {pwd}")
 
 #connecting to postgresql
 def get_db_connection():
-    conn = psy.connect(dbname='TaxTrack', user = 'postgres', password = pwd, host = 'localhost')
+    conn = psy.connect(render_db_url)
     
     return conn
 
@@ -48,15 +50,22 @@ def get_users():
     cur = conn.cursor()
     cur.execute('SELECT * FROM user_details')
     rows = cur.fetchall()
+    user_records = []
+    columns = ['name', 'age', 'email_id', 'id']
+    for row in rows:
+            record_dict = {}
+            for i, value in enumerate(row):
+                record_dict[columns[i]] = value
+            user_records.append(record_dict)
     cur.close()
     conn.close()
     
-    return jsonify(rows)
+    return jsonify({'user_details': user_records}), 201
 
 #api to add a tax record
 @app.route('/add_tax_record', methods=['POST'])
 def add_tax_record():
-    # try:
+    try:
         data = request.get_json()
         #income details
         email_id = data['email_id']
@@ -99,8 +108,8 @@ def add_tax_record():
         conn.close()
         
         return jsonify({'status': 'record added succesfully'}), 201
-    # except Exception as e :
-    #     return jsonify({'error': str(e)}), 400
+    except Exception as e :
+        return jsonify({'error': str(e)}), 400
 
 
 #api to get list of all past tax records
@@ -155,4 +164,4 @@ def get_news():
     return jsonify({'news': news}), 200
     
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
