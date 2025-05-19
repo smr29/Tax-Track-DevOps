@@ -14,6 +14,12 @@ pipeline {
             }
         }
 
+        stage('Login to DockerHub') {
+            steps {
+                bat "echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin"
+            }
+        }
+
         stage('Build Frontend Docker Image') {
             steps {
                 dir('frontend') {
@@ -27,12 +33,6 @@ pipeline {
                 dir('backend') {
                     bat "docker build -t %BACKEND_IMAGE% ."
                 }
-            }
-        }
-
-        stage('Login to DockerHub') {
-            steps {
-                bat "echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin"
             }
         }
 
