@@ -22,14 +22,13 @@ pipeline {
             }
         }
 
-       stage('Build Backend Docker Image') {
-  steps {
-    dir('backend') {
-      bat "docker build -t ${BACKEND_IMAGE} ."
-    }
-  }
-}
-
+        stage('Build Backend Docker Image') {
+            steps {
+                dir('backend') {
+                    bat "docker build -t %BACKEND_IMAGE% ."
+                }
+            }
+        }
 
         stage('Login to DockerHub') {
             steps {
@@ -47,10 +46,10 @@ pipeline {
 
     post {
         success {
-            echo 'Images built and pushed successfully!'
+            echo '✅ Images built and pushed successfully!'
         }
         failure {
-            echo 'Pipeline failed.'
+            echo '❌ Pipeline failed.'
         }
     }
 }
