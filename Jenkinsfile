@@ -22,13 +22,14 @@ pipeline {
             }
         }
 
-        stage('Build Backend Docker Image') {
-            steps {
-                dir('mongo-backend') {
-                    bat "docker build -t %BACKEND_IMAGE% ."
-                }
-            }
-        }
+       stage('Build Backend Docker Image') {
+  steps {
+    dir('backend') {
+      bat "docker build -t ${BACKEND_IMAGE} ."
+    }
+  }
+}
+
 
         stage('Login to DockerHub') {
             steps {
