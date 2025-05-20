@@ -1,47 +1,55 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    DOCKER_CREDENTIALS = credentials('dockerhub-creds') // Replace with your Jenkins creds ID
-    FRONTEND_IMAGE = 'your-dockerhub-user/frontend:latest' // Replace this
-    BACKEND_IMAGE = 'your-dockerhub-user/backend:latest'   // Replace this
-  }
-
-  stages {
-    stage('Checkout Code') {
-      steps {
-        git 'https://github.com/your-user/your-repo.git' // Replace this
-      }
+    environment {
+        DOCKER_CREDENTIALS = credentials('dockerhub-creds') // Jenkins credentials ID
+        FRONTEND_IMAGE = 'sandhya454/taxtrack-frontend:latest'
+        BACKEND_IMAGE  = 'sandhya454/taxtrack-backend:latest'
     }
 
-    stage('Build Frontend Image') {
-      steps {
-        dir('frontend') {
-          sh "docker build -t $FRONTEND_IMAGE ."
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'jenkins-setup', url: 'https://github.com/smr29/Tax-Track-DevOps.git'
+            }
         }
-      }
-    }
 
-    stage('Build Backend Image') {
-      steps {
-        dir('backend') {
-          sh "docker build -t $BACKEND_IMAGE ."
+        stage('Login to DockerHub') {
+            steps {
+                bat "echo %DOCKER_CREDENTIALS_PSW% | docker login -u %DOCKER_CREDENTIALS_USR% --password-stdin"
+            }
         }
-      }
+
+        stage('Build Frontend Docker Image') {
+            steps {
+                dir('frontend') {
+                    bat "docker build -t %FRONTEND_IMAGE% ."
+                }
+            }
+        }
+
+        stage('Build Backend Docker Image') {
+            steps {
+                dir('backend') {
+                    bat "docker build -t %BACKEND_IMAGE% ."
+                }
+            }
+        }
+
+        stage('Push Docker Images') {
+            steps {
+                bat "docker push %FRONTEND_IMAGE%"
+                bat "docker push %BACKEND_IMAGE%"
+            }
+        }
     }
 
-    stage('Push Images to DockerHub') {
-      steps {
-        sh "echo $DOCKER_CREDENTIALS_PSW | docker login -u $DOCKER_CREDENTIALS_USR --password-stdin"
-        sh "docker push $FRONTEND_IMAGE"
-        sh "docker push $BACKEND_IMAGE"
-      }
+    post {
+        success {
+            echo '✅ Images built and pushed successfully!'
+        }
+        failure {
+            echo '❌ Pipeline failed.'
+        }
     }
-
-    stage('Deploy to Kubernetes') {
-      steps {
-        sh 'kubectl apply -f k8s/'
-      }
-    }
-  }
 }
