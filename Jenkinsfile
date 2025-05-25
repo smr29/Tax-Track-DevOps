@@ -62,8 +62,8 @@ pipeline {
                 bat 'kubectl apply -f k8s/backend-deployment.yaml'
                 bat 'kubectl apply -f k8s/frontend-service.yaml'
                 bat 'kubectl apply -f k8s/backend-service.yaml'
-                bat 'kubectl scale deployment frontend --replicas=3'
-                bat 'kubectl scale deployment backend --replicas=3'
+                //bat 'kubectl scale deployment frontend --replicas=3'
+                //bat 'kubectl scale deployment backend --replicas=3'
             }
         }
 
