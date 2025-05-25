@@ -3,13 +3,8 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS = credentials('dockerhub-creds')
-<<<<<<< Updated upstream
         FRONTEND_IMAGE = 'san789/taxtrack-frontend:latest'
         BACKEND_IMAGE  = 'san789/taxtrack-backend:latest'
-=======
-        FRONTEND_IMAGE = 'san78/taxtrack-frontend:latest'
-        BACKEND_IMAGE  = 'san78/taxtrack-backend:latest'
->>>>>>> Stashed changes
     }
 
     stages {
