@@ -56,8 +56,7 @@ pipeline {
                 minikube start --driver=docker --force
             ) ELSE (
                 echo Minikube is already running. Skipping start.
-            )
-        '''
+            ) '''
     }
 }
 
