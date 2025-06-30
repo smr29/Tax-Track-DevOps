@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: san789/dev-backend:latest
+        image: shreyamrao/dev-backend:latest
         ports:
         - containerPort: 5000
 # - containerPort: 8080

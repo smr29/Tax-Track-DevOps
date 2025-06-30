@@ -3,8 +3,8 @@ pipeline {
 
     environment {
         DOCKER_CREDENTIALS = credentials('dockerhub-creds')
-        FRONTEND_IMAGE = 'san789/dev-frontend:latest'
-        BACKEND_IMAGE  = 'san789/dev-backend:latest'
+        FRONTEND_IMAGE = 'shreyamrao/dev-frontend:latest'
+        BACKEND_IMAGE  = 'shreyamrao/dev-backend:latest'
         KUBECONFIG = 'C:\\kube\\config' // <=== Make sure this path exists
     }
 
