@@ -31,8 +31,13 @@ pipeline {
         stage('📤 Push Images') {
             steps {
                 echo 'Pushing images to DockerHub — bon voyage!'
-                bat "docker push %FRONTEND_IMAGE%"
-                bat "docker push %BACKEND_IMAGE%"
+                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKERHUB_USER', passwordVariable: 'DOCKERHUB_PASS')]) {
+                   bat """
+                        docker login -u %DOCKERHUB_USER% -p %DOCKERHUB_PASS%
+                        docker push %FRONTEND_IMAGE%
+                        docker push %BACKEND_IMAGE%
+                    """
+                }
             }
         }
 
