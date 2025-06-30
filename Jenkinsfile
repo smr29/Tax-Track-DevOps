@@ -61,7 +61,7 @@ pipeline {
                 echo 'Applying Kubernetes manifests with 3 replicas — scaling up!'
                 bat '''
                 echo Using kubeconfig: %KUBECONFIG%
-                kubectl apply -f k8s --validate=false
+                kubectl apply -f k8s --kubeconfig=%KUBECONFIG% --validate=false
                 '''
             }
         }
@@ -69,7 +69,7 @@ pipeline {
         stage('🔍 Verify Pods') {
             steps {
                 echo 'Let’s see those pods running...'
-                bat 'kubectl get pods'
+                bat 'kubectl get pods --kubeconfig=%KUBECONFIG%'
             }
         }
     }
