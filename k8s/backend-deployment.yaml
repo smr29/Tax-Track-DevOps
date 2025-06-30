@@ -16,4 +16,5 @@ spec:
       - name: backend
         image: san789/dev-backend:latest
         ports:
-        - containerPort: 8080
+        - containerPort: 5000
+# - containerPort: 8080
